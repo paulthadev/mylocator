@@ -2,7 +2,7 @@
 
 A simple asynchronous app to display your current location (city, country) including details of the country.
 
-![alt text](https://github.com/fadayopaul/mylocator/blob/main/image.jpg?raw=true)
+![overview](https://github.com/fadayopaul/mylocator/blob/main/overview.png?raw=true)
 
 ### <p> 🔑 Take a look </p> ➡️ https://mylocator.netlify.app
 
