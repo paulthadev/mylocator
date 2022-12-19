@@ -1,6 +1,7 @@
 // "use strict";
 
 const btn = document.querySelector(".btn-country");
+const btnTry = document.querySelector(".btn-try");
 const countriesContainer = document.querySelector(".countries");
 const textContainer = document.querySelector(".text");
 
@@ -83,10 +84,14 @@ const whereAmI = function (lat, lng) {
     .then((data) => {
       data = data[0];
       renderCountry(data);
+      btn.style.visibility = "hidden";
     })
     .catch((err) => {
       console.error(err);
       renderError(`Something went wrong ${err.message}, Try again!`);
+
+      btn.style.display = "none";
+      btnTry.style.visibility = "visible";
     })
     .finally(() => {
       countriesContainer.style.opacity = "1";
@@ -95,4 +100,8 @@ const whereAmI = function (lat, lng) {
 
 btn.addEventListener("click", function () {
   getPosition();
+});
+
+btnTry.addEventListener("click", function () {
+  location.reload();
 });
