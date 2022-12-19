@@ -1,6 +1,6 @@
-### MY LOCATOR
+## MY LOCATOR
 
-A simple asynchronous app to display your current location (city, country) including details of the country
+A simple asynchronous app to display your current location (city, country) including details of the country.
 
 ### <p> 🔑 Take a look </p> ➡️ https://mylocator.netlify.app
 
