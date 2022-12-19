@@ -46,8 +46,8 @@ body {
 }
 .text {
   color: #555;
-  font-size: 15px;
-  padding: 5px 0;
+  font-size: 2rem;
+  padding: 1rem 0;
 }
 .neighbour::before {
   content: "Neighbour country";
@@ -112,6 +112,17 @@ body {
   cursor: pointer;
 }
 
+.btn-try {
+  border: none;
+  font-size: 2rem;
+  padding: 1rem 3rem;
+  margin-top: 1rem;
+  border-radius: 1rem;
+  color: white;
+  background-color: red;
+  cursor: pointer;
+  visibility: hidden;
+}
 .images {
   display: flex;
 }
