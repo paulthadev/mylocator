@@ -103,5 +103,5 @@ btn.addEventListener("click", function () {
 });
 
 btnTry.addEventListener("click", function () {
-  location.reload();
+  window.location.reload();
 });
