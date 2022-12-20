@@ -66,7 +66,10 @@ const getPosition = function () {
 const whereAmI = function (lat, lng) {
   fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
     .then((response) => {
-      resError(response, "Problem with geocoding!");
+      // resError(response, "Problem with geocoding!");
+      if (!response.ok) throw new Error(`${msg} (${response.status})`);
+      location.reload();
+
       return response.json();
     })
     .then((data) => {
