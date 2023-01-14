@@ -108,34 +108,30 @@ body {
   padding: 2rem 5rem;
   border-radius: 0.7rem;
   color: white;
-  background-color: orangered;
+  background-color: #9c41f2;
   cursor: pointer;
 }
 
-.btn-try {
-  border: none;
-  font-size: 2rem;
-  padding: 1rem 3rem;
-  margin-top: 1rem;
-  border-radius: 1rem;
-  color: white;
-  background-color: red;
-  cursor: pointer;
+/* creating css loader */
+
+#loading {
+  width: 2rem;
+  height: 2rem;
+  border: 5px solid #f3f3f3;
+  border-top: 6px solid #9c41f2;
+  border-radius: 100%;
+  margin: auto;
   visibility: hidden;
+  animation: spin 1s infinite linear;
 }
-.images {
-  display: flex;
+#loading.display {
+  visibility: visible;
 }
-
-.images img {
-  display: block;
-  width: 80rem;
-  margin: 4rem;
-}
-
-.images img.parallel {
-  width: 40rem;
-  margin: 2rem;
-  border: 3rem solid white;
-  box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
