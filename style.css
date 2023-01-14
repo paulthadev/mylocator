@@ -112,8 +112,16 @@ body {
   cursor: pointer;
 }
 
-/* creating css loader */
+.hidden {
+  visibility: hidden;
+}
 
+#countdown {
+  padding: 0;
+  margin: 0;
+}
+
+/* creating css loader */
 #loading {
   width: 2rem;
   height: 2rem;

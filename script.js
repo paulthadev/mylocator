@@ -1,7 +1,6 @@
 // "use strict";
 
 const btn = document.querySelector(".btn-country");
-const btnTry = document.querySelector(".btn-try");
 const countriesContainer = document.querySelector(".countries");
 const textContainer = document.querySelector(".text");
 const countdown = document.getElementById("countdown");
@@ -33,8 +32,7 @@ const renderCountry = function (data, className = "") {
        </p>
      </div>
    </article>
- 
-  `;
+   `;
   countriesContainer.insertAdjacentHTML("beforeend", html);
   // countriesContainer.style.opacity = 1;
 };
@@ -64,6 +62,8 @@ const count = () => {
     if (timeleft <= 0) {
       clearInterval(downloadTimer);
 
+      btn.classList.remove("hidden");
+      countdown.innerHTML = null;
       window.location.reload();
     } else {
       countdown.innerHTML = `Try again in ${timeleft} seconds`;
@@ -95,9 +95,7 @@ const whereAmI = function () {
   getPosition()
     .then((position) => {
       displayLoading();
-
       const { latitude, longitude } = position.coords;
-
       return fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`);
     })
     .then((response) => {
@@ -119,12 +117,11 @@ const whereAmI = function () {
     .then((data) => {
       data = data[0];
       renderCountry(data);
-      btn.style.visibility = "hidden";
+      btn.classList.add("hidden");
     })
     .catch((error) => {
       renderError(`${error.message}`);
-
-      btn.style.display = "none";
+      btn.classList.add("hidden");
       count();
     })
     .finally(() => {
