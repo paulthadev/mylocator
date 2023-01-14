@@ -64,7 +64,7 @@ const count = () => {
     if (timeleft <= 0) {
       clearInterval(downloadTimer);
 
-      window.location.reload();
+      // window.location.reload();
     } else {
       countdown.innerHTML = `Try again in ${timeleft} seconds`;
     }
@@ -98,6 +98,8 @@ const whereAmI = function () {
 
       const { latitude, longitude } = position.coords;
 
+      console.log(latitude, longitude);
+
       return fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`);
     })
     .then((response) => {
@@ -109,7 +111,8 @@ const whereAmI = function () {
         "afterbegin",
         `You are in ${data.city}, ${data.country}`
       );
-
+      console.log(data);
+      console.log(data.country);
       return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
     })
     .then((response) => {
