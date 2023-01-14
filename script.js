@@ -4,6 +4,8 @@ const btn = document.querySelector(".btn-country");
 const btnTry = document.querySelector(".btn-try");
 const countriesContainer = document.querySelector(".countries");
 const textContainer = document.querySelector(".text");
+const countdown = document.getElementById("countdown");
+const loader = document.querySelector("#loading");
 
 const renderCountry = function (data, className = "") {
   const flags = Object.values(data.flags)[0];
@@ -37,34 +39,67 @@ const renderCountry = function (data, className = "") {
   // countriesContainer.style.opacity = 1;
 };
 
+// wait function
+const wait = function (seconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+// showing loading
+function displayLoading() {
+  loader.classList.add("display");
+}
+
+// hiding loading
+function hideLoading() {
+  loader.classList.remove("display");
+}
+
+//count down
+const count = () => {
+  let timeleft = 5;
+
+  const downloadTimer = setInterval(function () {
+    if (timeleft <= 0) {
+      clearInterval(downloadTimer);
+
+      window.location.reload();
+    } else {
+      countdown.innerHTML = `Try again in ${timeleft} seconds`;
+    }
+    timeleft -= 1;
+  }, 1000);
+};
+
 const renderError = function (msg) {
   countriesContainer.insertAdjacentText("beforeend", msg);
 };
 
 const resError = function (response, msg) {
-  if (!response.ok) throw new Error(`${msg} (${response.status})`);
-};
-
-const getPosition = function () {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-        const { latitude } = position.coords;
-        const { longitude } = position.coords;
-        whereAmI(`${latitude}`, `${longitude}`);
-      },
-      function () {
-        renderError(
-          `Turn on Location service, to allow to determine your location`
-        );
-        countriesContainer.style.opacity = "1";
-      }
-    );
+  if (!response.ok) {
+    throw new Error(`${msg} (${response.status})`);
   }
 };
 
-const whereAmI = function (lat, lng) {
-  fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+const getPosition = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => resolve(position),
+      (error) => reject(error)
+    );
+  });
+};
+
+const whereAmI = function () {
+  getPosition()
+    .then((position) => {
+      displayLoading();
+
+      const { latitude, longitude } = position.coords;
+
+      return fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`);
+    })
     .then((response) => {
       resError(response, "Problem with geocoding!");
       return response.json();
@@ -86,22 +121,16 @@ const whereAmI = function (lat, lng) {
       renderCountry(data);
       btn.style.visibility = "hidden";
     })
-    .catch((err) => {
-      console.error(err);
-      renderError(`Something went wrong ${err.message}, Try again!`);
+    .catch((error) => {
+      renderError(`${error.message}`);
 
       btn.style.display = "none";
-      btnTry.style.visibility = "visible";
+      count();
     })
     .finally(() => {
+      hideLoading();
       countriesContainer.style.opacity = "1";
     });
 };
 
-btn.addEventListener("click", function () {
-  getPosition();
-});
-
-btnTry.addEventListener("click", function () {
-  window.location.reload();
-});
+btn.addEventListener("click", whereAmI);
