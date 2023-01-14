@@ -110,7 +110,7 @@ const whereAmI = function () {
     .then((data) => {
       textContainer.insertAdjacentText(
         "afterbegin",
-        `You are in ${data.city}, ${data.country}`
+        `You are in ${data.region}, ${data.country}`
       );
       console.log(data);
       console.log(data.country);
