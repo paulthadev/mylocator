@@ -99,6 +99,7 @@ const whereAmI = function () {
       const { latitude, longitude } = position.coords;
 
       console.log(latitude, longitude);
+      console.log(position);
 
       return fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`);
     })
