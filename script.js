@@ -44,17 +44,17 @@ const wait = function (seconds) {
   });
 };
 
-// showing loading
+// showing loading animation
 function displayLoading() {
   loader.classList.add("display");
 }
 
-// hiding loading
+// hiding loading animation
 function hideLoading() {
   loader.classList.remove("display");
 }
 
-//count down
+//count down timer
 const count = () => {
   let timeleft = 5;
 
@@ -72,62 +72,70 @@ const count = () => {
   }, 1000);
 };
 
-const renderError = function (msg) {
+// render error function
+const renderError = (msg) => {
   countriesContainer.insertAdjacentText("beforeend", msg);
 };
 
+//response error function
 const resError = function (response, msg) {
   if (!response.ok) {
     throw new Error(`${msg} (${response.status})`);
   }
 };
 
+// getting position coordinated
 const getPosition = () => {
   return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => resolve(position),
-      (error) => reject(error)
-    );
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 };
 
-const whereAmI = function () {
-  getPosition()
-    .then((position) => {
-      displayLoading();
-      const { latitude, longitude } = position.coords;
-      return fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`);
-    })
-    .then((response) => {
-      resError(response, "Problem with geocoding!");
-      return response.json();
-    })
-    .then((data) => {
-      textContainer.insertAdjacentText(
-        "afterbegin",
-        `You are in ${data.region}`
-      );
+const whereAmI = async () => {
+  try {
+    displayLoading();
 
-      return fetch(`https://restcountries.com/v3.1/alpha/${data.prov}`);
-    })
-    .then((response) => {
-      resError(response, "Country not found!");
-      return response.json();
-    })
-    .then((data) => {
-      data = data[0];
-      renderCountry(data);
-      btn.classList.add("hidden");
-    })
-    .catch((error) => {
-      renderError(`${error.message}`);
-      btn.classList.add("hidden");
-      count();
-    })
-    .finally(() => {
-      hideLoading();
-      countriesContainer.style.opacity = "1";
-    });
+    const position = await getPosition();
+    const { latitude, longitude } = position.coords;
+    const geo = await fetch(
+      `https://geocode.xyz/${latitude},${longitude}?geoit=json`
+    );
+    if (!geo.ok) {
+      resError(geo, "Problem with geocoding!");
+    }
+
+    const geoData = await geo.json();
+
+    // fetching country Data
+    const country = await fetch(
+      `https://restcountries.com/v3.1/alpha/${geoData.prov}`
+    );
+    if (!country.ok) {
+      resError(country, "Country not found!!");
+    }
+    const countryData = await country.json();
+
+    // insert region Text
+    textContainer.insertAdjacentText(
+      "afterbegin",
+      `You are in ${geoData.region}`
+    );
+
+    // rendering country
+    renderCountry(countryData[0]);
+
+    // hiding button
+    btn.classList.add("hidden");
+
+    // catching errors
+  } catch (error) {
+    renderError(`${error.message}`);
+    btn.classList.add("hidden");
+    count();
+  }
+  //finally
+  hideLoading();
+  countriesContainer.style.opacity = "1";
 };
 
 btn.addEventListener("click", whereAmI);
