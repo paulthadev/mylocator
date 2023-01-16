@@ -105,7 +105,6 @@ const whereAmI = async () => {
     }
 
     const geoData = await geo.json();
-    console.log(geoData);
 
     // fetching country Data
     const country = await fetch(
