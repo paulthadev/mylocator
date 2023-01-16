@@ -105,6 +105,7 @@ const whereAmI = async () => {
     }
 
     const geoData = await geo.json();
+    console.log(geoData);
 
     // fetching country Data
     const country = await fetch(
@@ -118,7 +119,7 @@ const whereAmI = async () => {
     // insert region Text
     textContainer.insertAdjacentText(
       "afterbegin",
-      `You are in ${geoData.region}`
+      `You are in ${geoData.city} ${geoData.region}`
     );
 
     // rendering country
