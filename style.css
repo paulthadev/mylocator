@@ -48,6 +48,8 @@ body {
   color: #555;
   font-size: 2rem;
   padding: 1rem 0;
+  text-align: center;
+  width: 33rem;
 }
 .neighbour::before {
   content: "Neighbour country";
