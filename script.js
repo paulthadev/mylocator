@@ -121,7 +121,7 @@ const whereAmI = async () => {
     // insert region Text
     textContainer.insertAdjacentText(
       "afterbegin",
-      `You are in ${geoData.address.road}, ${geoData.address.county}, ${geoData.address.state}`
+      `You are in ${geoData.display_name}`
     );
 
     // rendering country
