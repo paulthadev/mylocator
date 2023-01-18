@@ -108,7 +108,7 @@ const whereAmI = async () => {
       resError(geo, "Problem with geocoding!");
     }
     const geoData = await geo.json();
-    console.log(geoData);
+
     // fetching country Data
     const country = await fetch(
       `https://restcountries.com/v3.1/name/${geoData.address.country}`
