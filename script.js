@@ -91,24 +91,27 @@ const getPosition = () => {
   });
 };
 
+// Main App Function
 const whereAmI = async () => {
   try {
     displayLoading();
 
+    // consuming position cordinates
     const position = await getPosition();
     const { latitude, longitude } = position.coords;
+
+    // reverse geocoding
     const geo = await fetch(
-      `https://geocode.xyz/${latitude},${longitude}?geoit=json`
+      ` https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
     );
     if (!geo.ok) {
       resError(geo, "Problem with geocoding!");
     }
 
     const geoData = await geo.json();
-
     // fetching country Data
     const country = await fetch(
-      `https://restcountries.com/v3.1/alpha/${geoData.prov}`
+      `https://restcountries.com/v3.1/name/${geoData.address.country}`
     );
     if (!country.ok) {
       resError(country, "Country not found!!");
@@ -118,7 +121,7 @@ const whereAmI = async () => {
     // insert region Text
     textContainer.insertAdjacentText(
       "afterbegin",
-      `You are in ${geoData.city} ${geoData.country}`
+      `You are in ${geoData.address.road}, ${geoData.address.county}, ${geoData.address.state}`
     );
 
     // rendering country
