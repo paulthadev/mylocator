@@ -97,7 +97,9 @@ const whereAmI = async () => {
     displayLoading();
 
     // consuming position cordinates
-    const position = await getPosition();
+    const position = await getPosition().catch(() => {
+      throw new Error(`Turn on Location Service`);
+    });
     const { latitude, longitude } = position.coords;
 
     // reverse geocoding
